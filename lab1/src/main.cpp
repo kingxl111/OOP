@@ -16,6 +16,12 @@ int main() {
     cin >> desired_height;
     
     int answer1 = time_calc(up_speed, down_speed, desired_height);
+
+    if(answer1 == -1) {
+        cout << "Invalid input data!" << endl;
+        exit(-1);
+    }
+
     cout << "Answer: " << answer1 << endl;
 
     // int answer2 = time_calc_prime(up_speed, down_speed, desired_height);
