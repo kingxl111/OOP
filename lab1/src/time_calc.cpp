@@ -1,5 +1,5 @@
 #include <iostream>
-#include "foo.h"
+#include "time_calc.h"
 
 int time_calc(int up_speed, int down_speed, int desired_height) {
     

@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "foo.h"
+#include "../src/time_calc.h"
 
 TEST(test01, basic_test_set) {
     ASSERT_TRUE(time_calc(100, 10, 910) == 10);

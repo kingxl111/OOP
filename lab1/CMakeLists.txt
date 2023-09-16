@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 3.10)
 
 project(lab1)
 
-add_executable(main src/main.cpp src/foo.cpp)
+add_executable(main src/main.cpp src/time_calc.cpp)
 
 find_package(GTest REQUIRED)
 
 
-add_executable(gtests src/tests.cpp src/foo.cpp)
+add_executable(gtests tests/tests.cpp src/time_calc.cpp)
 
 target_link_libraries(gtests ${GTEST_LIBRARIES}
 

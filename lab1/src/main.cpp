@@ -1,5 +1,5 @@
 #include <iostream>
-#include "foo.h"
+#include "time_calc.h"
 
 using std::cin;
 using std::cout;
@@ -23,9 +23,6 @@ int main() {
     }
 
     cout << "Answer: " << answer1 << endl;
-
-    // int answer2 = time_calc_prime(up_speed, down_speed, desired_height);
-    // cout << "Answer: " <<  answer2 << endl;
 
     return 0;
 }
