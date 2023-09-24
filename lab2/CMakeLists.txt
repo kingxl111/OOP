@@ -11,7 +11,7 @@ include_directories(${INCLUDE_DIR})
 
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false ${SOURCE_DIR}/*.cpp)
 
-add_library(lab_02_lib ${SOURCES})
-add_executable(lab_02_exe src/main.cpp)
+add_library(lab2_lib ${SOURCES})
+add_executable(lab2_exe src/main.cpp)
 
-target_link_libraries(lab_02_exe PRIVATE lab_02_lib)
+target_link_libraries(lab2_exe PRIVATE lab2_lib)

@@ -13,11 +13,12 @@ public:
    Octal(Octal&& other) noexcept;      
 
    Octal add(const Octal& other);
-   Octal remove(const Octal& other);
+   Octal subtract(const Octal& other);
    bool  equals(const Octal& other) const;
    bool  greater(const Octal& other) const;
    bool  less(const Octal& other) const;
    
+   void print();
    std::ostream& print(std::ostream& os);
 
    virtual ~Octal() noexcept;

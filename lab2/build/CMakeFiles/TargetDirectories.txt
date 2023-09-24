@@ -1,0 +1,4 @@
+/home/vadim/Рабочий стол/OOP subj/OOP/lab2/build/CMakeFiles/lab2_lib.dir
+/home/vadim/Рабочий стол/OOP subj/OOP/lab2/build/CMakeFiles/lab2_exe.dir
+/home/vadim/Рабочий стол/OOP subj/OOP/lab2/build/CMakeFiles/edit_cache.dir
+/home/vadim/Рабочий стол/OOP subj/OOP/lab2/build/CMakeFiles/rebuild_cache.dir

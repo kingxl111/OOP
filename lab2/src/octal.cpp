@@ -1,18 +1,20 @@
-#include <iostream>
 #include "octal.h"
 
 using std::cin;
 using std::cout;
 using std::endl;
 
-Octal::Octal() : _size(0), _array{nullptr} {};
+Octal::Octal() {
+    this->_size = 0;
+    this->_array = nullptr;
+} 
 
-Octal::Octal(const size_t & n, unsigned char t = 0) {
+Octal::Octal(const size_t & n, unsigned char t) {
     _array = new unsigned char[n];
     for(int i = 0; i < n; ++i) {
         _array[i] = t;
     }
-    _size = n;
+    _size = n; 
 }
 
 Octal::Octal(const std::initializer_list< unsigned char> &t) {
@@ -48,11 +50,91 @@ Octal::Octal(Octal&& other) noexcept {
     other._array = nullptr;
 }      
 
-Octal::Octal add(const Octal& other) {
+Octal Octal::add(const Octal& other) {
+    Octal result(1, '1'); // чзх
+    if(this->_size > other._size) {
+        result._array = new unsigned char[this->_size + 1];
+        result._size = this->_size + 1;
+        int iter1 = this->_size - 1;
+        int iter2 = other._size - 1;
+        int rem = 0; 
 
+        while(iter2 >= 0) {
+            
+            int d1 = this->_array[iter1] - '0';
+            int d2 = other._array[iter2] - '0';
+            int d3 = (d1 + d2 + rem) % 8;
+            rem = (d1 + d2 + rem) / 8;
+
+            result._array[iter1 + 1] = (unsigned char)(d3 + '0');
+
+            --iter1;
+            --iter2;
+        }
+        while(iter1 >= 0) {
+            int d1 = this->_array[iter1] - '0';
+            int d3 = (d1 + rem) % 8;
+            rem = (d1 + rem) / 8;
+
+            result._array[iter1 + 1] = (unsigned char)(d3 + '0');
+
+            --iter1;
+        }
+        result._array[0] = (unsigned char)(rem + '0'); 
+    }
+    else if(this->_size < other._size) {
+        result._array = new unsigned char[other._size + 1];
+        result._size = other._size + 1;
+        int iter1 = this->_size - 1;
+        int iter2 = other._size - 1;
+        int rem = 0; 
+        while(iter1 >= 0) {
+            
+            int d1 = this->_array[iter1] - '0';
+            int d2 = other._array[iter2] - '0';
+            int d3 = (d1 + d2 + rem) % 8;
+            rem = (d1 + d2 + rem) / 8;
+
+            result._array[iter2 + 1] = (unsigned char)(d3 + '0');
+            
+            --iter1;
+            --iter2;
+        }
+        while(iter2 >= 0) {
+            int d2 = other._array[iter2] - '0';
+            int d3 = (d2 + rem) % 8;
+            rem = (d2 + rem) / 8;
+
+            result._array[iter2 + 1] = (unsigned char)(d3 + '0');
+            
+            --iter2;
+        }
+        result._array[0] = (unsigned char)(rem + '0'); 
+    }
+    else {
+        result._array = new unsigned char[this->_size + 1];
+        result._size = this->_size + 1;
+        int iter1 = this->_size - 1;
+        int iter2 = other._size - 1;
+        int rem = 0; 
+        while(iter2 >= 0) {
+            
+            int d1 = this->_array[iter1] - '0';
+            int d2 = other._array[iter2] - '0';
+            int d3 = (d1 + d2 + rem) % 8;
+            rem = (d1 + d2 + rem) / 8;
+
+            result._array[iter1 + 1] = (unsigned char)(d3 + '0');
+            
+            --iter1;
+            --iter2;
+        }
+        result._array[0] = (unsigned char)(rem + '0'); 
+    }
+    return result;
 }
 
-Octal::Octal subtract(const Octal& other) {
+Octal Octal::subtract(const Octal& other) {
 
 }
 
@@ -108,10 +190,22 @@ bool  Octal::less(const Octal& other) const {
     }
 }
    
-
-std::ostream& print(std::ostream& os) {
-
+void Octal::print() {
+    if (this->_size <= 0) {
+        return;
+    }
+    int i = 0;
+    if(this->_array[0] == '0') {
+        i = 1;
+    }
+    for(; i < this->_size; ++i) {
+        cout << this->_array[i];
+    } cout << endl;
 }
+
+// std::ostream& print(std::ostream& os) {
+
+// }
 
 Octal::~Octal() noexcept {
     if (_size > 0) {
