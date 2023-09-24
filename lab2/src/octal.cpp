@@ -106,7 +106,7 @@ Octal Octal::add(const Octal& other) {
             rem = (d2 + rem) / 8;
 
             result._array[iter2 + 1] = (unsigned char)(d3 + '0');
-            
+
             --iter2;
         }
         result._array[0] = (unsigned char)(rem + '0'); 
@@ -134,9 +134,9 @@ Octal Octal::add(const Octal& other) {
     return result;
 }
 
-Octal Octal::subtract(const Octal& other) {
+// Octal Octal::subtract(const Octal& other) {
 
-}
+// }
 
 bool Octal::equals(const Octal& other) const {
     if(this->_size == other._size) {
