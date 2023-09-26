@@ -26,4 +26,11 @@ public:
 private:
     unsigned char *_array;
     size_t _size;
+
+    bool _is_positive;
+    bool _is_negative;
+    
+    void add_intern(const Octal& other, Octal& result);
+    void subtract_intern(const Octal& other, Octal& result);
+
 };
