@@ -25,8 +25,12 @@ int main() {
     // cout << "n1 less than n2: " << n1.less(n2) << endl;
     // cout << "n1 equals n2: " << n1.equals(n2) << endl;
 
-    Octal n3 = n1.subtract(n2);
+    Octal n3 = n1.add(n2);
+    Octal n4 = n1.subtract(n2);
+    cout << "n1 + n2 == ";
     n3.print();
+    cout << "n1 - n2 == ";
+    n4.print();
     
     return 0;
 }

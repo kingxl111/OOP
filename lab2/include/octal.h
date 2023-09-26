@@ -12,8 +12,8 @@ public:
    Octal(const Octal& other);
    Octal(Octal&& other) noexcept;      
 
-   Octal add(const Octal& other);
-   Octal subtract(const Octal& other);
+   Octal add( Octal& other);
+   Octal subtract( Octal& other);
    bool  equals(const Octal& other) const;
    bool  greater(const Octal& other) const;
    bool  less(const Octal& other) const;
@@ -30,7 +30,7 @@ private:
     bool _is_positive;
     bool _is_negative;
     
-    void add_intern(const Octal& other, Octal& result);
-    void subtract_intern(const Octal& other, Octal& result);
+    void add_intern(Octal& other, Octal& result);
+    void subtract_intern(Octal& other, Octal& result);
 
 };

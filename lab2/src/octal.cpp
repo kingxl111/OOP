@@ -41,25 +41,36 @@ Octal::Octal(const std::initializer_list< unsigned char> &t) {
 }
 
 Octal::Octal(const std::string &t) {
-    if((t.size() > 0) && (t[0] == '-')) {
-        _array = new unsigned char[t.size() - 1];
-        _size  = t.size() - 1;
-
+    if(t.size() > 0) {
+        int pre_zero_counter = 0;
         for(size_t i{0}; i < t.size() - 1; ++i) {
-            _array[i] = t[i + 1];
+            if(t[i] != '0') {
+                break;
+            } 
+            ++pre_zero_counter;
         }
-        _is_negative = true;
-        _is_positive = false;
-    } 
-    else if (t.size() > 0) {
-        _array = new unsigned char[t.size()];
-        _size  = t.size();
+        if(t[0] == '-') {
 
-        for(size_t i{0}; i < t.size(); ++i) {
-            _array[i] = t[i];
+            _array = new unsigned char[t.size() - 1 - pre_zero_counter];
+            _size  = t.size() - 1 - pre_zero_counter;
+
+            for(size_t i{0}; i < t.size() - 1 - pre_zero_counter; ++i) {
+                _array[i] = t[i + 1 + pre_zero_counter];
+            }
+            _is_negative = true;
+            _is_positive = false;
+        } 
+        else  {
+
+            _array = new unsigned char[t.size() - pre_zero_counter];
+            _size  = t.size() - pre_zero_counter;
+
+            for(size_t i{0}; i < t.size() - pre_zero_counter; ++i) {
+                _array[i] = t[i + pre_zero_counter];
+            }
+            _is_negative = false;
+            _is_positive = true;
         }
-        _is_negative = false;
-        _is_positive = true;
     }
 }
 
@@ -81,7 +92,7 @@ Octal::Octal(Octal&& other) noexcept {
     other._array = nullptr;
 }      
 
-Octal Octal::add(const Octal& other) {
+Octal Octal::add(Octal& other) {
     Octal result; // init
     if(this->_is_positive && other._is_positive) {
         add_intern(other, result);
@@ -93,13 +104,80 @@ Octal Octal::add(const Octal& other) {
         result._is_positive = false;
         result._is_negative = true;
     }
-    // TO DO: add the actions for positive and negative numbers
+    else if (this->_is_negative && other._is_positive)  {
+        if(this->_size > other._size){
+            subtract_intern(other, result);
+            result._is_positive = false;
+            result._is_negative = true;
+        }
+        else if(this->_size < other._size) {
+            other.subtract_intern(*this, result);
+            result._is_negative = false;
+            result._is_positive = true;
+        }
+
+        else if (this->_size == other._size) { // for abs comparing
+            this->_is_negative = false;
+            this->_is_positive = true;
+            if(this->greater(other)){
+                subtract_intern(other, result);
+                result._is_negative = true;
+                result._is_positive = false;
+            }
+            else if(this->less(other)) {
+                other.subtract_intern(*this, result);
+                cout << "ar: "<< result._array << endl;
+                result._is_negative = false;
+                result._is_positive = true;
+            }
+            else {
+                result._array = new unsigned char[1];
+                result._array[0] = '0';
+                result._size = 1;
+            }
+            this->_is_negative = true;
+            this->_is_positive = false;
+        }
+    } 
+    else if (this->_is_positive && other._is_negative) {
+        if(this->_size > other._size){
+            subtract_intern(other, result);
+            result._is_positive = true;
+            result._is_negative = false;
+        }
+        else if(this->_size < other._size) {
+            other.subtract_intern(*this, result);
+            result._is_negative = true;
+            result._is_positive = false;
+        }
+        else if (this->_size == other._size) {
+            other._is_negative = false;
+            other._is_positive = true;
+            if(this->greater(other)){
+                subtract_intern(other, result);
+                result._is_negative = false;
+                result._is_positive = true;
+            }
+            else if(this->less(other)) {
+                other.subtract_intern(*this, result);
+                result._is_negative = true;
+                result._is_positive = false;
+            }
+            else {
+                result._array = new unsigned char[1];
+                result._array[0] = '0';
+                result._size = 1;
+            }
+            other._is_negative = true;
+            other._is_positive = false;
+        }
+    }
     return result;
 }
 
 
 
-void Octal::add_intern(const Octal& other, Octal& result) {
+void Octal::add_intern(Octal& other, Octal& result) {
     if(this->_size > other._size) {
         result._array = new unsigned char[this->_size + 1];
         result._size = this->_size + 1;
@@ -181,22 +259,26 @@ void Octal::add_intern(const Octal& other, Octal& result) {
     }
 }
 
-Octal Octal::subtract(const Octal& other) {
+Octal Octal::subtract(Octal& other) {
     Octal result;
     
     if(this->_is_positive && other._is_positive) {
-        subtract_intern(other, result);
         if(this->greater(other)) {
+            subtract_intern(other, result);
             result._is_negative = false;
             result._is_positive = true;
         } 
         else if (this->less(other)) {
+            other.subtract_intern(*this, result);
             result._is_negative = true;
             result._is_positive = false;
         } 
         else { //for zero
             result._is_negative = false;
             result._is_positive = true;
+            result._array = new unsigned char[1];
+            result._array[0] = '0';
+            result._size = 1;
         }
     }
     else if(this->_is_positive && other._is_negative) {
@@ -205,31 +287,79 @@ Octal Octal::subtract(const Octal& other) {
         result._is_positive = true;
     }
     else if (this->_is_negative && other._is_negative) {
-        add_intern(other, result);
         if(this->greater(other)) {
+            other.subtract_intern(*this, result);
             result._is_negative = false;
             result._is_positive = true;
         } 
         else if (this->less(other)) {
+            subtract_intern(other, result);
             result._is_negative = true;
             result._is_positive = false;
         } 
         else {
             result._is_negative = false;
             result._is_positive = true;
+            result._array = new unsigned char[1];
+            result._array[0] = '0';
+            result._size = 1;
         }
     } 
     else if (this->_is_negative && other._is_positive) {
         add_intern(other, result);
-        //TO DO:
+        result._is_negative = true;
+        result._is_positive = false;
     }
-
 
     return result;
 }
 
-void Octal::subtract_intern(const Octal& other, Octal& result) {
+void Octal::subtract_intern( Octal& other, Octal& result) {
     if(this->_size > other._size) {
+        result._array = new unsigned char[this->_size];
+        result._size = this->_size;
+        int iter1 = this->_size - 1;
+        int iter2 = other._size - 1;
+        int rem = 0; 
+
+        while(iter2 >= 0) {
+            
+            int digit1 = this->_array[iter1] - '0';
+            int digit2 = other._array[iter2] - '0';
+            if(digit1 - rem < digit2) {
+                digit1 = digit1 + 8 - rem;
+                rem = 1;
+            } 
+            else {
+                digit1 = digit1 - rem;
+                rem = 0;
+            }
+            int digit3 = digit1 - digit2;
+
+            result._array[iter1] = (unsigned char)(digit3 + '0');
+
+            --iter1;
+            --iter2;
+        }
+        while(iter1 >= 0) {
+            int digit1 = this->_array[iter1] - '0';
+            int digit3;
+            if(digit1 - rem < 0) {
+                digit1 = digit1 + 8 - rem;
+                rem = 1;
+            } 
+            else {
+                digit1 = digit1 - rem;
+                rem = 0;
+            }
+            digit3 = digit1;
+
+            result._array[iter1] = (unsigned char)(digit3 + '0');
+
+            --iter1;
+        }
+    }
+    else if(this->_size == other._size) {
         result._array = new unsigned char[this->_size];
         result._size = this->_size;
         int iter1 = this->_size - 1;
@@ -252,26 +382,8 @@ void Octal::subtract_intern(const Octal& other, Octal& result) {
 
             result._array[iter1] = (unsigned char)(digit3 + '0');
 
-            // cout << "cur array[i]: " << result._array[iter1] << endl;
             --iter1;
             --iter2;
-        }
-        while(iter1 >= 0) {
-            int digit1 = this->_array[iter1] - '0';
-            int digit3;
-            if(digit1 - rem < 0) {
-                digit1 = digit1 + 8 - rem;
-                rem = 1;
-            } 
-            else {
-                digit1 = digit1 - rem;
-                rem = 0;
-            }
-            digit3 = digit1;
-
-            result._array[iter1] = (unsigned char)(digit3 + '0');
-
-            --iter1;
         }
     } 
     return; 
@@ -390,11 +502,14 @@ void Octal::print() {
         return;
     }
     int i = 0;
-    if(this->_array[0] == '0') {
+    if((this->_array[0] == '0') && (this->_size > 1)) {
         i = 1;
     }
     if(this->_is_negative) {
         cout << '-';
+    }
+    while((this->_array[i] == '0') && (this->_size > 1)) {
+        ++i;
     }
     for(; i < this->_size; ++i) {
         cout << this->_array[i];
