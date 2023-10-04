@@ -24,8 +24,12 @@ Octal::Octal(const size_t & n, unsigned char t) {
 Octal::Octal(const std::initializer_list< unsigned char> &t) {
     _array = new unsigned char[t.size()];
     size_t i{0};
-    for (auto c : t)
+    for (auto c : t){
+        if((c < '0') || (c > '8')) {
+            throw std::logic_error("constructor: invalid format of number!");
+        }
         _array[i++] = c;
+    }
     _size = t.size();
 
     if(_array[0] == '-') {
@@ -42,35 +46,52 @@ Octal::Octal(const std::initializer_list< unsigned char> &t) {
 
 Octal::Octal(const std::string &t) {
     if(t.size() > 0) {
-        int pre_zero_counter = 0;
-        for(size_t i{0}; i < t.size() - 1; ++i) {
-            if(t[i] != '0') {
-                break;
-            } 
-            ++pre_zero_counter;
-        }
+        
         if(t[0] == '-') {
+
+            int pre_zero_counter = 0;
+            for(size_t i{1}; i < t.size() - 1; ++i) {
+                if(t[i] != '0') {
+                    break;
+                } 
+                ++pre_zero_counter;
+            }
 
             _array = new unsigned char[t.size() - 1 - pre_zero_counter];
             _size  = t.size() - 1 - pre_zero_counter;
 
             for(size_t i{0}; i < t.size() - 1 - pre_zero_counter; ++i) {
+                if((t[i + 1 + pre_zero_counter] < '0') || (t[i + 1 + pre_zero_counter] > '8')) {
+                    throw std::logic_error("constructor: invalid format of number!");
+                }
                 _array[i] = t[i + 1 + pre_zero_counter];
             }
             _is_negative = true;
             _is_positive = false;
         } 
         else  {
-
+            int pre_zero_counter = 0;
+            for(size_t i{0}; i < t.size() - 1; ++i) {
+                if(t[i] != '0') {
+                    break;
+                } 
+                ++pre_zero_counter;
+            }
             _array = new unsigned char[t.size() - pre_zero_counter];
             _size  = t.size() - pre_zero_counter;
 
             for(size_t i{0}; i < t.size() - pre_zero_counter; ++i) {
+                if((t[i + pre_zero_counter] < '0') || (t[i + pre_zero_counter] > '8')) {
+                    throw std::logic_error("constructor: invalid format of number!");
+                }
                 _array[i] = t[i + pre_zero_counter];
             }
             _is_negative = false;
             _is_positive = true;
         }
+    } 
+    else {
+        throw std::logic_error("constructor: invalid number!");
     }
 }
 
@@ -528,4 +549,25 @@ Octal::~Octal() noexcept {
         _is_negative = false;
         _is_positive = false;
     }
+}
+
+
+Octal operator+(Octal& l, Octal& r) {
+    return l.add(r);
+}
+
+Octal operator-(Octal& l, Octal& r) {
+    return l.subtract(r);
+}
+
+bool operator==(Octal& l, const Octal& r) {
+    return l.equals(r);
+}
+
+bool operator<(Octal& l, const Octal& r) {
+    return l.less(r);
+}
+
+bool operator>(Octal& l, const Octal& r) {
+    return l.greater(r);
 }

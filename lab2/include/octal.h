@@ -34,3 +34,10 @@ private:
     void subtract_intern(Octal& other, Octal& result);
 
 };
+
+
+Octal operator+(Octal& l, Octal& r);
+Octal operator-(Octal& l, Octal& r);
+bool operator==(Octal& l, const Octal& r); 
+bool operator<(Octal& l, const Octal& r);
+bool operator>(Octal& l, const Octal& r);
