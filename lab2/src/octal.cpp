@@ -4,7 +4,7 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-Octal::Octal() {
+Octal::Octal() noexcept{
     this->_size = 0;
     this->_array = nullptr;
     this->_is_negative = false;
@@ -12,11 +12,21 @@ Octal::Octal() {
 } 
 
 Octal::Octal(const size_t & n, unsigned char t) {
-    _array = new unsigned char[n];
-    for(int i = 0; i < n; ++i) {
-        _array[i] = t;
+    if(t == '0') {
+        _array = new unsigned char[1];
+        _array[0] = '0';
+        _size = 1;
     }
-    _size = n; 
+    else {
+        _array = new unsigned char[n];
+        for(int i = 0; i < n; ++i) {
+            if((t < '0') || (t >= '8')) {
+                throw std::logic_error("constructor: invalid format of number!");
+            }
+            _array[i] = t;
+        }
+        _size = n; 
+    }
     _is_positive = true;
     _is_negative = false;
 }
@@ -25,10 +35,11 @@ Octal::Octal(const std::initializer_list< unsigned char> &t) {
     _array = new unsigned char[t.size()];
     size_t i{0};
     for (auto c : t){
-        if((c < '0') || (c > '8')) {
-            throw std::logic_error("constructor: invalid format of number!");
+        if((c < '0') || (c >= '8')) {
+            throw std::logic_error("Constructor: invalid format of number!");
         }
         _array[i++] = c;
+        // cout << c << endl;
     }
     _size = t.size();
 
@@ -42,6 +53,7 @@ Octal::Octal(const std::initializer_list< unsigned char> &t) {
         _is_negative = false;
         _is_positive = true;
     }
+    
 }
 
 Octal::Octal(const std::string &t) {
@@ -61,13 +73,20 @@ Octal::Octal(const std::string &t) {
             _size  = t.size() - 1 - pre_zero_counter;
 
             for(size_t i{0}; i < t.size() - 1 - pre_zero_counter; ++i) {
-                if((t[i + 1 + pre_zero_counter] < '0') || (t[i + 1 + pre_zero_counter] > '8')) {
-                    throw std::logic_error("constructor: invalid format of number!");
+                if((t[i + 1 + pre_zero_counter] < '0') || (t[i + 1 + pre_zero_counter] >= '8')) {
+                    throw std::logic_error("Constructor: invalid format of number!");
                 }
                 _array[i] = t[i + 1 + pre_zero_counter];
             }
-            _is_negative = true;
-            _is_positive = false;
+            if((_size == 1) && (_array[0] == '0')) {
+                _is_negative = false;
+                _is_positive = true;
+            }
+            else {
+                _is_negative = true;
+                _is_positive = false;
+
+            }
         } 
         else  {
             int pre_zero_counter = 0;
@@ -81,8 +100,8 @@ Octal::Octal(const std::string &t) {
             _size  = t.size() - pre_zero_counter;
 
             for(size_t i{0}; i < t.size() - pre_zero_counter; ++i) {
-                if((t[i + pre_zero_counter] < '0') || (t[i + pre_zero_counter] > '8')) {
-                    throw std::logic_error("constructor: invalid format of number!");
+                if((t[i + pre_zero_counter] < '0') || (t[i + pre_zero_counter] >= '8')) {
+                    throw std::logic_error("Constructor: invalid format of number!");
                 }
                 _array[i] = t[i + pre_zero_counter];
             }
@@ -91,7 +110,7 @@ Octal::Octal(const std::string &t) {
         }
     } 
     else {
-        throw std::logic_error("constructor: invalid number!");
+        throw std::logic_error("Constructor: invalid number!");
     }
 }
 
@@ -192,6 +211,19 @@ Octal Octal::add(Octal& other) {
             other._is_negative = true;
             other._is_positive = false;
         }
+    }
+    if((result._array[0] == '0') && (result._size > 1)) {
+        result._size--;
+        unsigned char* ar = new unsigned char[result._size];
+        for(int i = 0; i < result._size; ++i) {
+            ar[i] = result._array[i + 1];
+        }
+        delete result._array;
+        result._array = new unsigned char[result._size];
+        for(int i = 0; i < result._size; ++i) {
+            result._array[i] = ar[i];
+        }
+        delete ar;
     }
     return result;
 }
@@ -332,6 +364,19 @@ Octal Octal::subtract(Octal& other) {
         result._is_positive = false;
     }
 
+    if((result._array[0] == '0') && (result._size > 1)) {
+        result._size--;
+        unsigned char* ar = new unsigned char[result._size];
+        for(int i = 0; i < result._size; ++i) {
+            ar[i] = result._array[i + 1];
+        }
+        delete result._array;
+        result._array = new unsigned char[result._size];
+        for(int i = 0; i < result._size; ++i) {
+            result._array[i] = ar[i];
+        }
+        delete ar;
+    }
     return result;
 }
 
@@ -411,6 +456,7 @@ void Octal::subtract_intern( Octal& other, Octal& result) {
 }
 
 bool Octal::equals(const Octal& other) const {
+ 
     if((this->_size == other._size) && (this->_is_negative == other._is_negative) 
     && (this->_is_positive == other._is_positive)) {
         for(int i = 0; i < _size; ++i) {
@@ -529,17 +575,13 @@ void Octal::print() {
     if(this->_is_negative) {
         cout << '-';
     }
-    while((this->_array[i] == '0') && (this->_size > 1)) {
+    while((i < this->_size) && (this->_array[i] == '0') && (this->_size > 1)) {
         ++i;
     }
     for(; i < this->_size; ++i) {
         cout << this->_array[i];
     } cout << endl;
 }
-
-// std::ostream& print(std::ostream& os) {
-
-// }
 
 Octal::~Octal() noexcept {
     if (_size > 0) {
@@ -551,6 +593,13 @@ Octal::~Octal() noexcept {
     }
 }
 
+unsigned char* Octal::get_array() {
+    return this->_array;
+}
+
+int Octal::get_size() {
+    return this->_size;
+}
 
 Octal operator+(Octal& l, Octal& r) {
     return l.add(r);
