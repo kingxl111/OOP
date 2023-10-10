@@ -8,22 +8,38 @@ class Triangle: public Figure {
 
     friend std::istream& operator>>(std::istream& is, Triangle& t);
     friend std::ostream& operator<<(std::ostream& os, Triangle& t);
+    friend bool operator==(Triangle& s1, Triangle& s2);
 
 public:
     Triangle();
-    Triangle(Triangle& t);
 
     operator double() const; 
 
-    double figure_square_calc() const override {
-        double half_meter = (a + b + c) / 2;
-        double sq = sqrt(half_meter * (half_meter - a) * (half_meter - b) * (half_meter - c));
+    Triangle operator=(Triangle& t) {
+
+        x1 = t.x1;
+        x2 = t.x2;
+        x3 = t.x3;
+        y1 = t.y1;
+        y2 = t.y2;
+        y3 = t.y3;
+        side1 = t.side1;
+        side2 = t.side2;
+        side3 = t.side3;
+        type = t.type;
+        
+        return *this;
+    }
+
+    virtual double figure_square_calc() const override {
+        double half_meter = (side1 + side2 + side3) / 2;
+        double sq = sqrt(half_meter * (half_meter - side1) * (half_meter - side2) * (half_meter - side3));
         return sq;
     }
 
 
 
-    void geo_center_calc() const override {
+    virtual void geo_center_calc() const override {
 
         double mid_x = (x1 + x2 + x3) / 3;
         double mid_y = (y1 + y2 + y3) / 3;
@@ -47,9 +63,9 @@ private:
     double y3;
 
     //Sides
-    double a;
-    double b;
-    double c;
+    double side1;
+    double side2;
+    double side3;
 
 
 };
@@ -71,13 +87,13 @@ inline std::istream& operator>>(std::istream& is, Triangle& t) {
 
     is >> t.x3 >> t.y3;
 
-    double a = sqrt((t.x1 - t.x2)*(t.x1 - t.x2) + (t.y1 - t.y2)*(t.y1 - t.y2));
-    double b = sqrt((t.x1 - t.x3)*(t.x1 - t.x3) + (t.y1 - t.y3)*(t.y1 - t.y3));
-    double c = sqrt((t.x3 - t.x2)*(t.x3 - t.x2) + (t.y3 - t.y2)*(t.y3 - t.y2));
+    double side1 = sqrt((t.x1 - t.x2)*(t.x1 - t.x2) + (t.y1 - t.y2)*(t.y1 - t.y2));
+    double side2 = sqrt((t.x1 - t.x3)*(t.x1 - t.x3) + (t.y1 - t.y3)*(t.y1 - t.y3));
+    double side3 = sqrt((t.x3 - t.x2)*(t.x3 - t.x2) + (t.y3 - t.y2)*(t.y3 - t.y2));
 
-    t.a = a;
-    t.b = b;
-    t.c = c;
+    t.side1 = side1;
+    t.side2 = side2;
+    t.side3 = side3;
 
     return is;
 

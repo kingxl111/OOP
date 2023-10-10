@@ -15,8 +15,8 @@ include_directories(${INCLUDE_DIR})
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false ${SOURCE_DIR}/*.cpp)
 
 add_library(lab3_lib ${SOURCES})
-add_executable(lab3_exe ${SOURCE_DIR}/main.cpp ${SOURCE_DIR}/triangle.cpp ${SOURCE_DIR}/rectangle.cpp ${SOURCE_DIR}/square.cpp)
-add_executable(tests_exe ${SOURCE_DIR}/main.cpp ${SOURCE_DIR}/triangle.cpp ${SOURCE_DIR}/rectangle.cpp ${SOURCE_DIR}/square.cpp)
+add_executable(lab3_exe ${SOURCE_DIR}/main.cpp ${SOURCE_DIR}/triangle.cpp ${SOURCE_DIR}/rectangle.cpp )
+add_executable(tests_exe ${SOURCE_DIR}/main.cpp ${SOURCE_DIR}/triangle.cpp ${SOURCE_DIR}/rectangle.cpp )
 
 target_link_libraries(lab3_exe PRIVATE lab3_lib)
 target_link_libraries(tests_exe PRIVATE lab3_lib ${GTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
