@@ -15,6 +15,7 @@ class Rectangle: public Figure {
 
 public:
     Rectangle();
+    Rectangle(double _x1, double _y1, double _x2, double _y2, double _x3, double _y3, double _x4, double _y4);
 
     operator double() const; 
     
@@ -32,7 +33,7 @@ public:
         side1 = r.side1;
         side2 = r.side2;
 
-        type = "Rectangle";
+        type = r.type;
 
         return *this;
     }
@@ -41,12 +42,13 @@ public:
         return side1 * side2;
     }
 
-    virtual void geo_center_calc() const override {
+    virtual void geo_center_calc() override {
 
         double mid_x = (x4 + x1) / 2;
         double mid_y = (y2 + y1) / 2;
-
-        std::cout << "Geo center: [ x : " << mid_x << ", y : " << mid_y << " ]" << std::endl;
+        this->geo_center_x = mid_x;
+        this->geo_center_y = mid_y;
+        // std::cout << type <<  " geo center: [ x : " << mid_x << ", y : " << mid_y << " ]" << std::endl;
 
     }
 
@@ -74,6 +76,7 @@ protected:
 
 inline std::istream& operator>>(std::istream& is, Rectangle& r) {
 
+    std::cout << "RECTANGLE:" << endl;
     std::cout << "Input the coordinates of the first point" << std::endl;
     std::cout << "order [x1,y1], separated by spaces : ";
 
@@ -122,6 +125,8 @@ inline std::istream& operator>>(std::istream& is, Rectangle& r) {
 
     r.side1 = r.y2 - r.y1;
     r.side2 = r.x4 - r.x1;
+
+    r.type = "Rectangle";
 
     return is;
 

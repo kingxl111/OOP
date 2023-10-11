@@ -12,6 +12,7 @@ class Triangle: public Figure {
 
 public:
     Triangle();
+    Triangle(double _x1, double _y1, double _x2, double _y2, double _x3, double _y3);
 
     operator double() const; 
 
@@ -37,17 +38,15 @@ public:
         return sq;
     }
 
-
-
-    virtual void geo_center_calc() const override {
+    virtual void geo_center_calc() override {
 
         double mid_x = (x1 + x2 + x3) / 3;
         double mid_y = (y1 + y2 + y3) / 3;
-
-        std::cout << "Geo center: [ x : " << mid_x << ", y : " << mid_y << " ]" << std::endl;
+        this->geo_center_x = mid_x;
+        this->geo_center_y = mid_y;
+        // std::cout << type  <<  " geo center: [ x : " << mid_x << ", y : " << mid_y << " ]" << std::endl;
 
     }
-
 
     ~Triangle() = default;
 
@@ -72,6 +71,7 @@ private:
 
 inline std::istream& operator>>(std::istream& is, Triangle& t) {
 
+    std::cout << "TRIANGLE:" << endl;
     std::cout << "Input the coordinates of the first point" << std::endl;
     std::cout << "order [x1,y1], separated by spaces : ";
 
