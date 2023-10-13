@@ -9,16 +9,10 @@ using std::endl;
 
 #define FIGURE_COUNT 3
 
-// Треугольник Квадрат Прямоугольник
+// Triangle Square Rectangle
 
 int main() {
 
-    Triangle t(1, 2, 3, 3.6, 4.8, 2);
-    double sq = t.figure_square_calc();
-    cout << sq << endl;
-    cout << t;
-
-    /*
     try {
 
         Figure** figs = new Figure* [FIGURE_COUNT];
@@ -125,8 +119,6 @@ int main() {
     catch(...) {
         cout << "Invalid input data!" << endl;
     }
-
-    */
 
     return 0;
 }

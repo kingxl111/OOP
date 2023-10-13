@@ -136,21 +136,13 @@ TEST(TriangleOperatorsOverloads, cout_oper_overload3) {
     ASSERT_EQ(output, ans);
 }
 
-// TEST(TriangleOperatorsOverloads, cin_oper_overload1) {
-//     testing::internal::CaptureStdout(); // Capture the output
-//     Triangle t1(-7, 8, 3, 4, 6, -2);
-//     Triangle t2 = t1;
-//     cout << t2;
-//     std::string output = testing::internal::GetCapturedStdout(); // Get the captured output
-
-//     testing::internal::CaptureStdout();
-//     cout <<  "Point1 [ x1 : -7, y1 : 8 ]" << endl;
-//     cout << "Point2 [ x2 : 3, y2 : 4 ]" << endl;
-//     cout << "Point3 [ x3 : 6, y3 : -2 ]" << endl;
-//     std::string ans = testing::internal::GetCapturedStdout();
-
-//     ASSERT_EQ(output, ans);
-// }
+TEST(TriangleOperatorsOverloads, cin_oper_overload1) {
+    
+    Triangle t1;
+    std::cin >> t1;
+    Triangle t2(-7, 8, 3, 4, 6, -2);
+    ASSERT_TRUE(t1 == t2);
+}
 
 
 TEST(RectangleMethods, square1) {
@@ -273,21 +265,21 @@ TEST(RectangleOperatorsOverloads, cout_oper_overload3) {
     ASSERT_EQ(output, ans);
 }
 
-// TEST(RectangleOperatorsOverloads, cin_oper_overload1) {
-//     testing::internal::CaptureStdout(); // Capture the output
-//     Rectangle t1(-7, 8, 3, 4, 6, -2);
-//     Rectangle t2 = t1;
-//     cout << t2;
-//     std::string output = testing::internal::GetCapturedStdout(); // Get the captured output
+TEST(RectangleOperatorsOverloads, cin_oper_overload1) {
+    
+    Rectangle r1;
+    std::cin >> r1;
+    Rectangle r2(1, 1, 1, 5, 6, 5, 6, 1);
+    ASSERT_TRUE(r1 == r2);
+}
 
-//     testing::internal::CaptureStdout();
-//     cout <<  "Point1 [ x1 : -7, y1 : 8 ]" << endl;
-//     cout << "Point2 [ x2 : 3, y2 : 4 ]" << endl;
-//     cout << "Point3 [ x3 : 6, y3 : -2 ]" << endl;
-//     std::string ans = testing::internal::GetCapturedStdout();
-
-//     ASSERT_EQ(output, ans);
-// }
+TEST(RectangleOperatorsOverloads, cin_oper_overload2) {
+    
+    Rectangle r1;
+    std::cin >> r1;
+    Rectangle r2;
+    ASSERT_FALSE(r1 == r2);
+}
 
 TEST(SquareMethods, square1) {
     Square s(0, 0, 3, 3, 3, 0, 0, 3);
@@ -396,22 +388,14 @@ TEST(SquareOperatorsOverloads, cout_oper_overload2) {
     ASSERT_EQ(output, ans);
 }
 
+TEST(SquareOperatorsOverloads, cin_oper_overload) {
+    
+    Square s1;
+    std::cin >> s1;
+    Square s2(1, 1, 1, 5, 5, 1, 5, 5);
+    ASSERT_TRUE(s1 == s2);
+}
 
-// TEST(SquareOperatorsOverloads, cin_oper_overload1) {
-//     testing::internal::CaptureStdout(); // Capture the output
-//     Square t1(-7, 8, x3, 4, 6, -2);
-//     Square t2 = t1;
-//     cout << t2;
-//     std::string output = testing::internal::GetCapturedStdout(); // Get the captured output
-
-//     testing::internal::CaptureStdout();
-//     cout <<  "Point1 [ x1 : -7, y1 : 8 ]" << endl;
-//     cout << "Point2 [ x2 : 3, y2 : 4 ]" << endl;
-//     cout << "Point3 [ x3 : 6, y3 : -2 ]" << endl;
-//     std::string ans = testing::internal::GetCapturedStdout();
-
-//     ASSERT_EQ(output, ans);
-// }
 
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
