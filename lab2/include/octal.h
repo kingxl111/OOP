@@ -26,6 +26,7 @@ public:
     std::ostream& print(std::ostream& os);  
     virtual ~Octal() noexcept;
 
+
 private:
     unsigned char *_array;
     size_t _size;

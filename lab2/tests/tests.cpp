@@ -80,6 +80,12 @@ TEST(less4, basic_test_set) {
     ASSERT_FALSE(n1 < n2);
 }
 
+TEST(less5, basic_test_set) {
+    Octal n1;
+    Octal n2;
+    ASSERT_FALSE(n1 < n2);
+}
+
 TEST(sum1, basic_test_set) {
     Octal n1("-1244124");
     Octal n2("0");
@@ -177,6 +183,13 @@ TEST(sum10, basic_test_set) {
 
     Octal answer("53125212662654655070250640625317245416647762711740077701051066607412124117526376675270401670774542712757");
 
+    ASSERT_TRUE(n3 == answer);
+}
+
+TEST(sum11, basic_test_set) {
+    Octal n1, n2;
+    Octal n3 = n1 + n2;
+    Octal answer;
     ASSERT_TRUE(n3 == answer);
 }
 
@@ -287,6 +300,14 @@ TEST(sub11, basic_test_set) {
 
     Octal answer("0");
 
+    ASSERT_TRUE(n3 == answer);
+}
+
+TEST(sub12, basic_test_set) {
+    Octal n1;
+    Octal n2;
+    Octal n3 = n1 - n2;
+    Octal answer;
     ASSERT_TRUE(n3 == answer);
 }
 

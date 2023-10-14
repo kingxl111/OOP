@@ -17,7 +17,7 @@ file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false ${SOURCE_DIR}/*.cpp)
 add_library(lab2_lib ${SOURCES})
 add_executable(lab2_exe src/main.cpp)
 add_executable(tests_exe tests/tests.cpp)
-
+	
 
 target_link_libraries(lab2_exe PRIVATE lab2_lib)
 target_link_libraries(tests_exe PRIVATE lab2_lib ${GTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})

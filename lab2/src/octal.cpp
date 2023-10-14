@@ -212,6 +212,9 @@ Octal Octal::add(Octal& other) {
             other._is_positive = false;
         }
     }
+    else {
+        return result;
+    }
     if((result._array[0] == '0') && (result._size > 1)) {
         result._size--;
         unsigned char* ar = new unsigned char[result._size];
@@ -363,7 +366,9 @@ Octal Octal::subtract(Octal& other) {
         result._is_negative = true;
         result._is_positive = false;
     }
-
+    else {
+        return result;
+    }
     if((result._array[0] == '0') && (result._size > 1)) {
         result._size--;
         unsigned char* ar = new unsigned char[result._size];
@@ -619,4 +624,25 @@ bool operator<(Octal& l, const Octal& r) {
 
 bool operator>(Octal& l, const Octal& r) {
     return l.greater(r);
+}
+
+std::ostream& Octal::print(std::ostream& os) {
+    if (this->_size <= 0) {
+        return os;
+    }
+    int i = 0;
+    if((this->_array[0] == '0') && (this->_size > 1)) {
+        i = 1;
+    }
+    if(this->_is_negative) {
+        os << '-';
+    }
+    while((i < this->_size) && (this->_array[i] == '0') && (this->_size > 1)) {
+        ++i;
+    }
+    for(; i < this->_size; ++i) {
+        os << this->_array[i];
+    } os << endl;
+    
+    return os;  
 }
