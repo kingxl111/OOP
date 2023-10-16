@@ -27,7 +27,6 @@ public:
         side1 = t.side1;
         side2 = t.side2;
         side3 = t.side3;
-        type = t.type;
         
         return *this;
     }
@@ -44,8 +43,6 @@ public:
         double mid_y = (y1 + y2 + y3) / 3;
         this->geo_center_x = mid_x;
         this->geo_center_y = mid_y;
-        // std::cout << type  <<  " geo center: [ x : " << mid_x << ", y : " << mid_y << " ]" << std::endl;
-
     }
 
     ~Triangle() = default;
@@ -71,7 +68,6 @@ private:
 
 inline std::istream& operator>>(std::istream& is, Triangle& t) {
 
-    std::cout << "TRIANGLE:" << endl;
     std::cout << "Input the coordinates of the first point" << std::endl;
     std::cout << "order [x1,y1], separated by spaces : ";
 
@@ -104,7 +100,6 @@ inline std::ostream& operator<<(std::ostream& os, Triangle& t) {
     os << "Point1 [ x1 : " << t.x1 << ", y1 : " << t.y1 << " ]" << std::endl;
     os << "Point2 [ x2 : " << t.x2 << ", y2 : " << t.y2 << " ]" << std::endl;
     os << "Point3 [ x3 : " << t.x3 << ", y3 : " << t.y3 << " ]" << std::endl;
-
 
     return os;
 }

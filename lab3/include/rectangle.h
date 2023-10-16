@@ -33,8 +33,6 @@ public:
         side1 = r.side1;
         side2 = r.side2;
 
-        type = r.type;
-
         return *this;
     }
 
@@ -76,7 +74,6 @@ protected:
 
 inline std::istream& operator>>(std::istream& is, Rectangle& r) {
 
-    std::cout << "RECTANGLE:" << endl;
     std::cout << "Input the coordinates of the first point" << std::endl;
     std::cout << "order [x1,y1], separated by spaces : ";
 
@@ -125,8 +122,6 @@ inline std::istream& operator>>(std::istream& is, Rectangle& r) {
 
     r.side1 = r.y2 - r.y1;
     r.side2 = r.x4 - r.x1;
-
-    r.type = "Rectangle";
 
     return is;
 

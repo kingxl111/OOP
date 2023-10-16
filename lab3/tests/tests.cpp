@@ -335,6 +335,12 @@ TEST(SquareOperatorsOverloads, equal_oper_overload2) {
     ASSERT_FALSE(s1 == s2);
 }
 
+TEST(SquareOperatorsOverloads, equal_oper_overload3) {
+    Square s;
+    Rectangle r;
+    ASSERT_TRUE(r == s);
+}
+
 TEST(SquareOperatorsOverloads, assign_oper_overload1) {
     Square s1(5, 5, 10, 10, 10, 5, 5, 10);
     Square s2;

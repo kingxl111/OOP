@@ -31,7 +31,6 @@ int main() {
         cout << "TRIANGLE3: " << endl;
         Triangle t3(1, 1, 3, 3, 5, 0);
         cout << t3;
-        cout << "TRIANGLE3 type: " << t3.get_type() << endl; 
 
         bool eq1 = (t1 == t2);
         cout <<  "eq1: "<< eq1 << endl;
@@ -46,10 +45,6 @@ int main() {
         cout << s2;
 
         Square s3 = s2;
-
-        cout << "SQUARE3: " << endl;
-        cout << s3;
-        cout << "SQUARE3 TYPE: " << s3.get_type() << endl;
 
         bool eq2 = (s1 == s2);
         cout <<  "eq2: "<< eq2 << endl;
@@ -79,7 +74,6 @@ int main() {
         for(int i = 0; i < size; ++i) {
             figs[i]->geo_center_calc();
             double sq = figs[i]->figure_square_calc();
-            cout << figs[i]->get_type() << " square: " << sq << endl;
             total_sq += sq;
         }
 
@@ -105,7 +99,6 @@ int main() {
             for(int i = 0; i < size; ++i) {
                 figs_new[i]->geo_center_calc();
                 double sq = figs_new[i]->figure_square_calc();
-                cout << figs_new[i]->get_type() << " square: " << sq << endl;
                 total_sq += sq;
             }
             delete[] figs_new;
@@ -119,6 +112,9 @@ int main() {
     catch(...) {
         cout << "Invalid input data!" << endl;
     }
+
+    Square s;
+    Rectangle r = s;
 
     return 0;
 }

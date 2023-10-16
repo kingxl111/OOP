@@ -8,7 +8,6 @@ class Square: public Rectangle {
 
 public:
     Square() {
-        type = "Square";
         if(side1 != side2) {
             throw std::logic_error("invalid coordinates!");
         }
@@ -53,8 +52,6 @@ public:
         side1 = y2 - y1;
         side2 = x4 - x1;
 
-        type = "Square";
-
         if(side1 != side2) {
             throw std::logic_error("invalid coordinates!");
         }
@@ -75,8 +72,6 @@ public:
         side2 = s.side2;
 
         side1 = side2;
-
-        type = "Square";
 
         return *this;
     }
@@ -132,8 +127,6 @@ std::istream& operator>>(std::istream& is, Square& s) {
 
     s.side1 = s.y2 - s.y1;
     s.side2 = s.x4 - s.x1;
-
-    s.type = "Square";
 
     if(s.side1 != s.side2) {
         throw std::logic_error("invalid coordinates!");

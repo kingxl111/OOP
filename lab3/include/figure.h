@@ -19,13 +19,7 @@ public:
         return geo_center_y;
     }
 
-    string get_type() {
-        return type;
-    }
-
 protected:
-    string type;
     double geo_center_x;
     double geo_center_y;
-
 };  
