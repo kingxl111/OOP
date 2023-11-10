@@ -10,38 +10,38 @@ class Triangle: public Figure<T> {
 public:
     using vertex_t = std::pair<T,T>;
 
-    friend std::istream& operator>>(std::istream& is, Triangle<T>& t) {
+    std::istream& operator>>(std::istream& is) override{
 
         std::cout << "Input the coordinates of the first point" << std::endl;
         std::cout << "order [x1,y1], separated by spaces : ";
 
-        is >> t.v1.first >> t.v1.second;
+        is >> v1.first >> v1.second;
 
         std::cout << "Input the coordinates of the second point" << std::endl;
         std::cout << "order [x2,y2], separated by spaces : ";
 
-        is >> t.v2.first >> t.v2.second;
+        is >> v2.first >> v2.second;
 
         std::cout << "Input the coordinates of the third point" << std::endl;
         std::cout << "order [x3,y3], separated by spaces : ";
 
-        is >> t.v3.first >> t.v3.second;
+        is >> v3.first >> v3.second;
 
-        T side1 = sqrt((t.v1.first - t.v2.first)*(t.v1.first - t.v2.first) + (t.v1.second - t.v2.second)*(t.v1.second - t.v2.second));
-        T side2 = sqrt((t.v1.first - t.v3.first)*(t.v1.first - t.v3.first) + (t.v1.second - t.v3.second)*(t.v1.second - t.v3.second));
-        T side3 = sqrt((t.v3.first - t.v2.first)*(t.v3.first - t.v2.first) + (t.v3.second - t.v2.second)*(t.v3.second - t.v2.second));
+        T side1 = sqrt((v1.first - v2.first)*(v1.first - v2.first) + (v1.second - v2.second)*(v1.second - v2.second));
+        T side2 = sqrt((v1.first - v3.first)*(v1.first - v3.first) + (v1.second - v3.second)*(v1.second - v3.second));
+        T side3 = sqrt((v3.first - v2.first)*(v3.first - v2.first) + (v3.second - v2.second)*(v3.second - v2.second));
 
-        t.side1 = side1;
-        t.side2 = side2;
-        t.side3 = side3;
+        side1 = side1;
+        side2 = side2;
+        side3 = side3;
 
         return is;
     }
 
-    friend std::ostream& operator<<(std::ostream& os, Triangle<T>& t) {
-        os << "Point1 [ x1 : " << t.v1.first << ", y1 : " << t.v1.second << " ]" << std::endl;
-        os << "Point2 [ x2 : " << t.v2.first << ", y2 : " << t.v2.second << " ]" << std::endl;
-        os << "Point3 [ x3 : " << t.v3.first << ", y3 : " << t.v3.second << " ]" << std::endl;
+    std::ostream& operator<<(std::ostream& os) override{
+        os << "Point1 [ x1 : " << v1.first << ", y1 : " << v1.second << " ]" << std::endl;
+        os << "Point2 [ x2 : " << v2.first << ", y2 : " << v2.second << " ]" << std::endl;
+        os << "Point3 [ x3 : " << v3.first << ", y3 : " << v3.second << " ]" << std::endl;
 
         return os;
     }
@@ -107,6 +107,8 @@ public:
 
         T mid_x = (v1.first + v2.first + v3.first) / 3;
         T mid_y = (v1.second + v2.second + v3.second) / 3;
+        mid.first = mid_x;
+        mid.second = mid_y;
         this->geo_center = mid;
 
         return mid;

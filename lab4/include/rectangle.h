@@ -13,67 +13,66 @@ class Rectangle: public Figure<T> {
 public:
     using vertex_t = std::pair<T,T>;
 
-    // friend bool operator==(Rectangle<T>& r1, Rectangle<T>& r2);
-    friend std::ostream& operator<<(std::ostream& os, Rectangle<T>& r) {
+    std::ostream& operator<<(std::ostream& os) override{
 
-        os << "Point1 [ x1 : " << r.v1.first << ", y1 : " << r.v1.second << " ]" << std::endl;
-        os << "Point2 [ x2 : " << r.v2.first << ", y2 : " << r.v2.second << " ]" << std::endl;
-        os << "Point3 [ x3 : " << r.v3.first << ", y3 : " << r.v3.second << " ]" << std::endl;
-        os << "Point4 [ x4 : " << r.v4.first << ", y4 : " << r.v4.second << " ]" << std::endl;
+        os << "Point1 [ x1 : " << v1.first << ", y1 : " << v1.second << " ]" << std::endl;
+        os << "Point2 [ x2 : " << v2.first << ", y2 : " << v2.second << " ]" << std::endl;
+        os << "Point3 [ x3 : " << v3.first << ", y3 : " << v3.second << " ]" << std::endl;
+        os << "Point4 [ x4 : " << v4.first << ", y4 : " << v4.second << " ]" << std::endl;
 
         return os;
     
     }
 
-    friend std::istream& operator>>(std::istream& is, Rectangle<T>& r) {
+    std::istream& operator>>(std::istream& is) override {
         std::cout << "Input the coordinates of the first point" << std::endl;
         std::cout << "order [x1,y1], separated by spaces : ";
 
-        is >> r.v1.first >> r.v1.second;
+        is >> v1.first >> v1.second;
 
         std::cout << "Input the coordinates of the second point" << std::endl;
         std::cout << "order [x2,y2], separated by spaces : ";
 
-        is >> r.v2.first >> r.v2.second;
+        is >> v2.first >> v2.second;
 
         std::cout << "Input the coordinates of the third point" << std::endl;
         std::cout << "order [x3,y3], separated by spaces : ";
 
-        is >> r.v3.first >> r.v3.second;
+        is >> v3.first >> v3.second;
 
         std::cout << "Input the coordinates of the fourth point" << std::endl;
         std::cout << "order [x4,y4], separated by spaces : ";
 
-        is >> r.v4.first >> r.v4.second;
+        is >> v4.first >> v4.second;
 
-        T min_x = min(min(min(r.v1.first, r.v2.first), r.v3.first), r.v4.first);
-        T max_x = max(max(max(r.v1.first, r.v2.first), r.v3.first), r.v4.first);
+        T min_x = min(min(min(v1.first, v2.first), v3.first), v4.first);
+        T max_x = max(max(max(v1.first, v2.first), v3.first), v4.first);
 
-        T sum_x = r.v1.first + r.v2.first + r.v3.first + r.v4.first;
+        T sum_x = v1.first + v2.first + v3.first + v4.first;
         if((2*min_x + 2*max_x) != sum_x) {
             throw std::logic_error("invalid coordinates!");
         }
 
-        r.v1.first = min_x;
-        r.v2.first = min_x;
-        r.v3.first = max_x;
-        r.v4.first = max_x;
+        v1.first = min_x;
+        v2.first = min_x;
+        v3.first = max_x;
+        v4.first = max_x;
         
-        T min_y = min(min(min(r.v1.second, r.v2.second), r.v3.second), r.v4.second);
-        T max_y = max(max(max(r.v1.second, r.v2.second), r.v3.second), r.v4.second);
+        T min_y = min(min(min(v1.second, v2.second), v3.second), v4.second);
+        T max_y = max(max(max(v1.second, v2.second), v3.second), v4.second);
 
-        T sum_y = r.v1.second + r.v2.second + r.v3.second + r.v4.second;
+        T sum_y = v1.second + v2.second + v3.second + v4.second;
         if((2*min_y + 2*max_y) != sum_y) {
             throw std::logic_error("invalid coordinates!");
         }
 
-        r.v1.second = min_y;
-        r.v2.second = max_y;
-        r.v3.second = max_y;
-        r.v4.second = min_y;
+        v1.second = min_y;
+        v2.second = max_y;
+        v3.second = max_y;
+        v4.second = min_y;
         
-        r.side1 = r.v2.second - r.v1.second;
-        r.side2 = r.v4.first - r.v1.first;
+        side1 = v2.second - v1.second;
+        side2 = v4.first - v1.first;
 
         return is;
     }
@@ -157,9 +156,11 @@ public:
     virtual vertex_t geo_center_calc() override {
 
         vertex_t mid;
-
+        
         mid.first = (v4.first + v1.first) / 2;
         mid.second = (v2.second + v1.second) / 2;
+        mid.first = mid_x;
+        mid.second = mid_y;
         this->geo_center = mid;
 
         return mid;
