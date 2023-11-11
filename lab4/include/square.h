@@ -32,7 +32,7 @@ public:
         T min_x = min(min(min(this->v1.first, this->v2.first), this->v3.first), this->v4.first);
         T max_x = max(max(max(this->v1.first, this->v2.first), this->v3.first), this->v4.first);
 
-        T sum_x = this->v2.first + this->v2.first + this->v3.first + this->v4.first;
+        T sum_x = this->v1.first + this->v2.first + this->v3.first + this->v4.first;
         if((2*min_x + 2*max_x) != sum_x) {
             throw std::logic_error("invalid coordinates!");
         }
@@ -45,15 +45,15 @@ public:
         T min_y = min(min(min(this->v1.second, this->v2.second), this->v3.second), this->v4.second);
         T max_y = max(max(max(this->v1.second, this->v2.second), this->v3.second), this->v4.second);
 
-        T sum_y = this->v2.second + this->v2.second + this->v3.second + this->v4.second;
+        T sum_y = this->v1.second + this->v2.second + this->v3.second + this->v4.second;
         if((2*min_y + 2*max_y) != sum_y) {
             throw std::logic_error("invalid coordinates!");
         }
 
         this->v1.second = min_y;
-        this->v2.second = min_y;
+        this->v2.second = max_y;
         this->v3.second = max_y;
-        this->v4.second = max_y;
+        this->v4.second = min_y;
         
         this->side1 = this->v2.second - this->v1.second;
         this->side2 = this->v4.first - this->v1.first;

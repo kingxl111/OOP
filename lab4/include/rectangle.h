@@ -24,6 +24,11 @@ public:
     
     }
 
+    std::ostream& print(std::ostream& os) override {
+        *this << os; 
+        return os;   
+    }
+
     std::istream& operator>>(std::istream& is) override {
         std::cout << "Input the coordinates of the first point" << std::endl;
         std::cout << "order [x1,y1], separated by spaces : ";
@@ -77,6 +82,18 @@ public:
         return is;
     }
 
+    friend bool operator==(Rectangle<T> r1, Rectangle<T> r2) {
+        int result = 1;      
+        result *= (r1.v1.first == r2.v1.first);
+        result *= (r1.v2.first == r2.v2.first);
+        result *= (r1.v3.first == r2.v3.first);
+        result *= (r1.v4.first == r2.v4.first);
+        result *= (r1.v1.second == r2.v1.second);
+        result *= (r1.v2.second == r2.v2.second);
+        result *= (r1.v3.second == r2.v3.second);
+        result *= (r1.v4.second == r2.v4.second);
+        return static_cast<bool>(result);
+    }
 
     Rectangle() {
         v1.first = 0;
@@ -156,13 +173,9 @@ public:
     virtual vertex_t geo_center_calc() override {
 
         vertex_t mid;
-        
         mid.first = (v4.first + v1.first) / 2;
         mid.second = (v2.second + v1.second) / 2;
-        mid.first = mid_x;
-        mid.second = mid_y;
         this->geo_center = mid;
-
         return mid;
     }
 

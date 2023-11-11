@@ -46,6 +46,11 @@ public:
         return os;
     }
 
+    std::ostream& print(std::ostream& os) override {
+        *this << os;
+        return os;   
+    }
+
     Triangle() {
         v1.first = 0;
         v1.second = 0;
@@ -93,6 +98,17 @@ public:
         side3 = t.side3;
         
         return *this;
+    }
+
+    friend bool operator==(Triangle<T> t1, Triangle<T> t2) {
+        int result = 1;
+        result *= (t1.v1.first == t2.v1.first);
+        result *= (t1.v2.first == t2.v2.first);
+        result *= (t1.v3.first == t2.v3.first);
+        result *= (t1.v1.second == t2.v1.second);
+        result *= (t1.v2.second == t2.v2.second);
+        result *= (t1.v3.second == t2.v3.second);
+        return static_cast<bool>(result);
     }
 
     virtual T figure_square_calc() const override {

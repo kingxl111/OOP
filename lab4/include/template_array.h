@@ -52,6 +52,23 @@ public:
         return _size;
     }
 
+    void remove(size_t index) {
+        if((index < 0) || (index >= this->_size)) {
+            throw std::logic_error("Invalid array index!");
+        }
+        std::shared_ptr<T[]> new_array = std::shared_ptr<T[]>(new T[this->_size - 1]);
+        int move = 0;
+        for (size_t i = 0; i < _size; i++) {
+            if(i == index) {
+                move = 1;
+                continue;
+            }
+            new_array[i - move] = _array[i];
+        }
+        this->_size--;
+        this->_array = new_array;
+    }
+
     ~Array() noexcept
     {
         // std::cout << "destructor:" << _array.use_count() << std::endl;
