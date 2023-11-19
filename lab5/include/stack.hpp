@@ -80,6 +80,10 @@ public:
 			return &other_iterator.ptr->data != &this->ptr->data;
 		}
 
+		bool operator == (const Iterator & other_iterator) {
+			return &other_iterator.ptr->data == &this->ptr->data;
+		}
+
 		friend std::ostream & operator << (std::ostream & out, const Iterator & it) {
 			out << *(it.ptr);
 			return out;

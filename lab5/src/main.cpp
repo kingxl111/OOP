@@ -32,7 +32,7 @@ int main() {
         }
 
         for(const auto& [k,v]: my_map) {
-            cout << k << "->" << v << endl;
+            cout << k << " -> " << v << endl;
         } cout << "=======================================================" << endl << endl;
 
         cout << "Allocator checking for my Stack " << endl; 
