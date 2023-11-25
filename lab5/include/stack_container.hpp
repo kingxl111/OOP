@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <memory>
 
 template<class T, class ALLOCATOR>
 class Stack {
@@ -16,7 +15,6 @@ private:
 		eraser() : stack_item_eraser() {};
 		eraser(allocator_type* another_eraser) : stack_item_eraser(another_eraser) {}
 
-		/* std::shared_ptr uses operator() to delete memory */
 		void operator() (void* ptr) {
 			stack_item_eraser.deallocate((Stack_item*)ptr, 1);
 		}
@@ -24,7 +22,7 @@ private:
 
 	struct Stack_item {
 		T data;
-		std::shared_ptr<Stack_item> next;
+		Stack_item* next;
 
 		Stack_item() noexcept : data(), next(nullptr) {};
 		explicit Stack_item(const T & elem) noexcept : data(elem), next(nullptr) {}
@@ -46,7 +44,7 @@ private:
 public:
 	class Iterator {
 	private:
-		std::shared_ptr<Stack_item> ptr;
+		Stack_item* ptr;
 	public:
 		using iterator_category = std::forward_iterator_tag;
 		using difference_type = std::ptrdiff_t;
@@ -56,7 +54,7 @@ public:
 		using const_reference = const T&;
 
 		Iterator() : ptr(nullptr) {}
-		Iterator(const std::shared_ptr<Stack_item> & another_ptr) : ptr(another_ptr) {}
+		Iterator(Stack_item* another_ptr) : ptr(another_ptr) {}
 
 		bool is_null() {
 			return ptr == nullptr;
@@ -95,7 +93,7 @@ public:
 	};
 
 private:
-	std::shared_ptr<Stack_item> top_item;
+	Stack_item* top_item;
 	eraser stack_eraser;
 
 public:
@@ -111,7 +109,9 @@ public:
 
 	void pop() {
 		if (top_item) {
-			top_item = top_item->next;
+            Stack_item* next = top_item->next;
+            stack_eraser.stack_item_eraser.deallocate(top_item, 1);
+            top_item = next;
 		} 
         else {
 			throw std::logic_error("Empty stack!");
@@ -121,9 +121,9 @@ public:
 	void push(const T & elem) {
 		Stack_item* new_item = stack_eraser.stack_item_eraser.allocate(sizeof(Stack_item));
 		stack_eraser.stack_item_eraser.construct(new_item, elem);
-		std::shared_ptr<Stack_item> new_node_shared(new_item, stack_eraser);
-		new_node_shared->next = top_item;
-		top_item = new_node_shared;
+		Stack_item* new_node(new_item);
+		new_node->next = top_item;
+		top_item = new_node;
 	}
 
 	T top() {
@@ -138,19 +138,18 @@ public:
 	void erase(Iterator it) {
 		if (it.is_null()) {
 			throw std::logic_error("Iterator points to nullptr!");
-		} 
+		}
         else {
 			if (*it == *top_item) {
 				top_item = top_item->next;
 			} else {
-				std::shared_ptr<Stack_item> prev_item = top_item;
+				Stack_item* prev_item = top_item;
 				while (*prev_item->next != *it) {
 					prev_item = prev_item->next;
 				}
 				prev_item->next = prev_item->next->next;
 				(*it).next = nullptr;
 			}
-			it.unvalidate();
 		}
 	}
 };

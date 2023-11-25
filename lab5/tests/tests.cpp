@@ -1,8 +1,9 @@
 #include <gtest/gtest.h>
 #include <iostream>
 #include "allocator.hpp"
-#include "stack.hpp"
+#include "stack_container.hpp"
 
+#define BLOCKS 1024
 
 TEST(MapWithMyAllocatorTests, test1) {
 
@@ -91,7 +92,7 @@ TEST(StackWithMyAllocator, test5) {
     test_stack.pop();
     test_stack.push(512);
 
-    ASSERT_TRUE(test_stack.top() == 512);
+    ASSERT_TRUE(test_stack.top() == 512);   
 }
 
 TEST(StackWithMyAllocator, test6) {
@@ -100,7 +101,39 @@ TEST(StackWithMyAllocator, test6) {
     ASSERT_TRUE(test_stack.begin() == test_stack.end());
 }
 
+TEST(StackIterator, test1) {
+    Stack<int, My_Allocator::Allocator<int> > test_stack;
+    test_stack.push(3);
+    Stack<int, My_Allocator::Allocator<int> >::Iterator it = test_stack.begin();
 
+    testing::internal::CaptureStdout(); 
+    std::cout << *it << std::endl;
+    std::string output = testing::internal::GetCapturedStdout(); 
+
+    testing::internal::CaptureStdout(); 
+    std::cout << 3 << std::endl;
+    std::string ans = testing::internal::GetCapturedStdout(); 
+    
+    ASSERT_TRUE(ans == output);
+}
+
+TEST(StackIterator, test2) {
+    Stack<int, My_Allocator::Allocator<int> > test_stack1;
+    Stack<int, My_Allocator::Allocator<int> >::Iterator it1 = test_stack1.begin();
+
+    Stack<int, My_Allocator::Allocator<int> > test_stack2;
+    Stack<int, My_Allocator::Allocator<int> >::Iterator it2 = test_stack2.begin();
+        
+    ASSERT_TRUE(it1 == it2);
+}
+
+TEST(Allocator, test) {
+    Stack<int, My_Allocator::Allocator<int>> test_stack;
+    for (size_t i = 0; i < BLOCKS; ++i) {
+        test_stack.push(i);
+    }
+    EXPECT_ANY_THROW(test_stack.push(42));    
+}
 
 auto main(int argc, char** argv) -> int {
 

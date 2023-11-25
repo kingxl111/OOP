@@ -1,7 +1,7 @@
 #include <iostream>
 #include <map>
 #include "allocator.hpp"
-#include "stack.hpp"
+#include "stack_container.hpp"
 
 using std::cin;
 using std::cout;
@@ -38,10 +38,10 @@ int main() {
         cout << "Allocator checking for my Stack " << endl; 
 
         Stack<int, Allocator<int> > stack;
-        int elem_count;
+        size_t elem_count;
         cout << "Enter elements count: ";
         cin >> elem_count;
-        for (size_t i = 0; i < elem_count; i++) {    
+        for (size_t i = 0; i < elem_count; ++i) {    
             cout << "Enter the integer number: ";
             int n;
             cin >> n;
@@ -51,6 +51,11 @@ int main() {
         for (Stack<int, Allocator<int> >::Iterator i = stack.begin(); i != stack.end(); ++i) {
             cout << *i << endl; // 
         }        
+        stack.pop();
+        stack.push(42);
+        for (Stack<int, Allocator<int> >::Iterator i = stack.begin(); i != stack.end(); ++i) {
+            cout << *i << endl; // 
+        } 
         cout << "Checking is done=======================================" << endl;
     }
     catch(const std::exception& e) {

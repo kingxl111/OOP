@@ -22,9 +22,7 @@ namespace My_Allocator {
         using pointer = T *;
         using const_pointer = const T *;
 
-        Allocator() {
-            // _used_blocks = (char *)malloc(sizeof(T) * max_count);
-            // _free_blocks = (void **)malloc(sizeof(void *) * max_count);
+        Allocator() {   
 
             for (size_t i = 0; i < max_count; i++) {
                 _free_blocks[i] = &_used_blocks[i];
@@ -43,11 +41,6 @@ namespace My_Allocator {
                 std::cout << "allocator: Memory freed" << std::endl;
 #endif
 
-            // delete _free_blocks;
-            // delete _used_blocks; 
-
-            // _free_blocks = nullptr;
-            // _used_blocks = nullptr;
         }
 
         template <class U>
@@ -65,7 +58,7 @@ namespace My_Allocator {
 #endif
             }
             else {
-                std::cout << "allocator: No memory exception :-)" << std::endl;
+                throw std::logic_error("allocator: No memory exception :-)");
             }
             return result;
         }
@@ -73,7 +66,11 @@ namespace My_Allocator {
         void deallocate(T *pointer, size_t) {
 #ifdef DEBUG
             std::cout << "allocator: Deallocate block " << std::endl;
-#endif
+#endif      
+            // std::cout << _free_count + 1 << " " << max_count << std::endl;
+            if (_free_count + 1 >= max_count) {
+                return; //we have to many free_blocks 
+            }
             _free_blocks[_free_count++] = pointer;
         }
         template <typename U, typename... Args>
@@ -96,4 +93,3 @@ namespace My_Allocator {
         return false;
     }
 }
-
