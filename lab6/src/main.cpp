@@ -3,6 +3,7 @@
 #include "bandit.hpp"
 #include "elf.hpp"
 
+
 // Text Observer
 class TextObserver : public IFightObserver {
 private:
@@ -51,21 +52,22 @@ std::shared_ptr<NPC> factory(std::istream &is) {
 
     if (result)
         result->subscribe(TextObserver::get());
-
     return result;
 }
 
 std::shared_ptr<NPC> factory(NpcType type, int x, int y) {
     std::shared_ptr<NPC> result;
-    switch (type)
-    {
+    switch (type) {
     case BanditType:
+        std::cout << "Bandit generated\n";
         result = std::make_shared<Bandit>(x, y);
         break;
     case KnightType:
+        std::cout << "Knight generated\n";
         result = std::make_shared<Knight>(x, y);
         break;
     case ElfType:
+        std::cout << "Elf generated\n";
         result = std::make_shared<Elf>(x, y);
         break;
     default:
@@ -73,7 +75,7 @@ std::shared_ptr<NPC> factory(NpcType type, int x, int y) {
     }
     if (result)
         result->subscribe(TextObserver::get());
-
+    // std::cout << type << std::endl;
     return result;
 }
 
@@ -124,15 +126,15 @@ set_t fight(const set_t &array, size_t distance) {
 
     for (const auto &attacker : array)
         for (const auto &defender : array)
-            if ((attacker != defender) && (attacker->is_close(defender, distance)))
-            {
+            if ((attacker != defender) && (attacker->is_close(defender, distance))) {
                 bool success{false};
-                if (defender->is_bandit())
-                    success = attacker->fight(std::dynamic_pointer_cast<Bandit>(defender));
-                if (defender->is_knight())
-                    success = attacker->fight(std::dynamic_pointer_cast<Knight>(defender));
-                if (defender->is_elf())
-                    success = attacker->fight(std::dynamic_pointer_cast<Elf>(defender));
+                // if (defender->is_bandit())
+                //     success = attacker->fight(std::dynamic_pointer_cast<Bandit>(defender));
+                // if (defender->is_knight())
+                //     success = attacker->fight(std::dynamic_pointer_cast<Knight>(defender));
+                // if (defender->is_elf())
+                //     success = attacker->fight(std::dynamic_pointer_cast<Elf>(defender));
+                success = defender->accept(attacker);
                 if (success)
                     dead_list.insert(defender);
             }
@@ -142,14 +144,16 @@ set_t fight(const set_t &array, size_t distance) {
 
 auto main() -> int {
 
-    set_t array; // монстры
+    set_t array; // npc
 
     // Гененрируем начальное распределение монстров
     std::cout << "Generating ..." << std::endl;
-    for (size_t i = 0; i < 10; ++i)
-        array.insert(factory(NpcType(std::rand() % 3 + 1),
-                             std::rand() % 100,
-                             std::rand() % 100));
+    for (size_t i = 0; i < 10; ++i) {
+        std::shared_ptr<NPC> cur_npc = factory(NpcType(std::rand() % 3 + 1),
+                                       std::rand() % 100,
+                                       std::rand() % 100);
+        array.insert(cur_npc);
+    }
     std::cout << "Saving ..." << std::endl;
 
     save(array, "npc.txt");

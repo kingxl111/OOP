@@ -41,9 +41,16 @@ struct NPC : public std::enable_shared_from_this<NPC> {
     void fight_notify(const std::shared_ptr<NPC> defender,bool win);
     virtual bool is_close(const std::shared_ptr<NPC> &other, size_t distance) const;
 
-    virtual bool is_knight() const;
-    virtual bool is_bandit() const;
-    virtual bool is_elf() const ;
+    // virtual bool is_knight() const;
+    // virtual bool is_bandit() const;
+    // virtual bool is_elf() const ;
+
+    // INSTEAD this I will use ...
+    virtual bool accept(std::shared_ptr<NPC> visitor) = 0;
+    bool visit(std::shared_ptr<Knight> ref);
+    bool visit(std::shared_ptr<Bandit> ref);
+    bool visit(std::shared_ptr<Elf> ref);
+    //
 
     virtual bool fight(std::shared_ptr<Knight> other) = 0;
     virtual bool fight(std::shared_ptr<Bandit> other) = 0;

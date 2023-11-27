@@ -22,16 +22,26 @@ bool NPC::is_close(const std::shared_ptr<NPC> &other, size_t distance) const {
         return false;
 }
 
-bool NPC::is_bandit() const {
-    return false;
-}
+// bool NPC::is_bandit() const {
+//     return false;
+// }
 
-bool NPC::is_knight() const {
-    return false;
-}
+// bool NPC::is_knight() const {
+//     return false;
+// }
 
-bool NPC::is_elf() const {
-    return false;
+// bool NPC::is_elf() const {
+//     return false;
+// }
+
+bool NPC::visit(std::shared_ptr<Knight> knight) {
+    return this->fight(knight);
+}
+bool NPC::visit(std::shared_ptr<Bandit> bandit) {
+    return this->fight(bandit);
+}
+bool NPC::visit(std::shared_ptr<Elf> elf) {
+    return this->fight(elf);
 }
 
 void NPC::save(std::ostream &os) {

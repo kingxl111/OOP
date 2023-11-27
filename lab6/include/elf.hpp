@@ -6,7 +6,8 @@ struct Elf : public NPC {
     Elf(std::istream &is);
     void print() override;
     void save(std::ostream &os) override;
-    bool is_elf() const override;
+    // bool is_elf() const override;
+    bool accept(std::shared_ptr<NPC> visitor) override;
     bool fight(std::shared_ptr<Knight> other) override;
     bool fight(std::shared_ptr<Bandit> other) override;
     bool fight(std::shared_ptr<Elf> other) override;

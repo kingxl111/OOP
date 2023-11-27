@@ -1,3 +1,5 @@
+#include "bandit.hpp"
+#include "elf.hpp"
 #include "knight.hpp"
 
 Knight::Knight(int x, int y) : NPC(KnightType, x, y) {}
@@ -11,8 +13,14 @@ void Knight::save(std::ostream &os) {
     os << KnightType << std::endl;
     NPC::save(os);
 }
-bool Knight::is_knight() const {
-    return true;
+
+// bool Knight::is_knight() const {
+//     return true;
+// }
+
+bool Knight::accept(std::shared_ptr<NPC> visitor) {
+    std::shared_ptr<Knight> This = std::make_shared<Knight>(*this);
+    return visitor->visit(This);
 }
 
 bool Knight::fight(std::shared_ptr<Bandit> other) {
