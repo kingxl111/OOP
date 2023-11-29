@@ -37,7 +37,7 @@ struct NPC : public std::enable_shared_from_this<NPC> {
     NPC(NpcType t, int _x, int _y);
     NPC(NpcType t, std::istream &is);
 
-    void subscribe(std::shared_ptr<IFightObserver>observer );
+    void subscribe(std::shared_ptr<IFightObserver>observer ); //add_observer
     void fight_notify(const std::shared_ptr<NPC> defender,bool win);
     virtual bool is_close(const std::shared_ptr<NPC> &other, size_t distance) const;
 
@@ -56,6 +56,7 @@ struct NPC : public std::enable_shared_from_this<NPC> {
     virtual bool fight(std::shared_ptr<Bandit> other) = 0;
     virtual bool fight(std::shared_ptr<Elf> other) = 0;
     virtual void print() = 0;
+    virtual void print(std::ostream &os) = 0;
 
     virtual void save(std::ostream &os);
 

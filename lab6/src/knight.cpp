@@ -9,6 +9,10 @@ void Knight::print() {
     std::cout << *this;
 }
 
+void Knight::print(std::ostream &outfs) {
+    outfs << *this;
+}
+
 void Knight::save(std::ostream &os) {
     os << KnightType << std::endl;
     NPC::save(os);

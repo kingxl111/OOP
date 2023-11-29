@@ -1,0 +1,32 @@
+
+Murder --------
+knight: { x:90, y:84} 
+bandit: { x:98, y:89} 
+
+Murder --------
+knight: { x:93, y:26} 
+bandit: { x:90, y:39} 
+
+Murder --------
+elf: { x:86, y:6} 
+knight: { x:93, y:26} 
+
+Murder --------
+knight: { x:93, y:26} 
+bandit: { x:80, y:43} 
+
+Murder --------
+elf: { x:86, y:6} 
+knight: { x:81, y:74} 
+
+Murder --------
+elf: { x:86, y:6} 
+knight: { x:75, y:74} 
+
+Murder --------
+elf: { x:86, y:6} 
+knight: { x:90, y:84} 
+
+Murder --------
+elf: { x:86, y:6} 
+knight: { x:73, y:91} 

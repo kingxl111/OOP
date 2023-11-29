@@ -9,6 +9,10 @@ void Elf::print() {
     std::cout << *this;
 }
 
+void Elf::print(std::ostream &outfs) {
+    outfs << *this;
+}
+
 void Elf::save(std::ostream &os) {
     os << ElfType << std::endl;
     NPC::save(os);

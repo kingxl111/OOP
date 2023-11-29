@@ -1,0 +1,2 @@
+/usr/bin/ar qc liblab6_lib.a CMakeFiles/lab6_lib.dir/src/bandit.cpp.o CMakeFiles/lab6_lib.dir/src/elf.cpp.o CMakeFiles/lab6_lib.dir/src/knight.cpp.o CMakeFiles/lab6_lib.dir/src/main.cpp.o CMakeFiles/lab6_lib.dir/src/npc.cpp.o
+/usr/bin/ranlib liblab6_lib.a

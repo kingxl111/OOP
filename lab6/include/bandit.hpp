@@ -5,6 +5,7 @@ struct Bandit : public NPC {
     Bandit(int x, int y);
     Bandit(std::istream &is);
     void print() override;
+    void print(std::ostream &os) override;
     void save(std::ostream &os) override;
     // bool is_bandit() const override;
     bool accept(std::shared_ptr<NPC> visitor) override;

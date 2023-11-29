@@ -9,6 +9,10 @@ void Bandit::print() {
     std::cout << *this;
 }
 
+void Bandit::print(std::ostream &outfs) {
+    outfs << *this;
+}
+
 void Bandit::save(std::ostream &os) {
     os << BanditType << std::endl;
     NPC::save(os);

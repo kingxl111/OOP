@@ -2,40 +2,16 @@
 #include "knight.hpp"
 #include "bandit.hpp"
 #include "elf.hpp"
+#include "fighting.hpp"
 
-
-// Text Observer
-class TextObserver : public IFightObserver {
-private:
-    TextObserver() {};
-
-public:
-    static std::shared_ptr<IFightObserver> get()
-    {
-        static TextObserver instance;
-        return std::shared_ptr<IFightObserver>(&instance, [](IFightObserver *) {});
-    }
-
-    void on_fight(const std::shared_ptr<NPC> attacker, const std::shared_ptr<NPC> defender, bool win) override
-    {
-        if (win)
-        {
-            std::cout << std::endl
-                      << "Murder --------" << std::endl;
-            attacker->print();
-            defender->print();
-        }
-    }
-};
+std::string logs_file_name = "logs.txt";
 
 // Фабрики -----------------------------------
 std::shared_ptr<NPC> factory(std::istream &is) {
     std::shared_ptr<NPC> result;
     int type{0};
-    if (is >> type)
-    {
-        switch (type)
-        {
+    if (is >> type) {
+        switch (type) {
         case BanditType:
             result = std::make_shared<Bandit>(is);
             break;
@@ -52,6 +28,7 @@ std::shared_ptr<NPC> factory(std::istream &is) {
 
     if (result)
         result->subscribe(TextObserver::get());
+        result->subscribe(FileObserver::get(logs_file_name));
     return result;
 }
 
@@ -75,6 +52,7 @@ std::shared_ptr<NPC> factory(NpcType type, int x, int y) {
     }
     if (result)
         result->subscribe(TextObserver::get());
+        result->subscribe(FileObserver::get(logs_file_name));
     // std::cout << type << std::endl;
     return result;
 }
@@ -112,7 +90,6 @@ std::ostream &operator<<(std::ostream &os, const set_t &array) {
     return os;
 }
 
-
 // ВНИМАНИЕ: метод осуществляющий сражение написан неправильно!
 // Переделайте его на использование паттерна Visitor
 // То есть внутри цикла вместо кучи условий должно быть:
@@ -122,6 +99,7 @@ std::ostream &operator<<(std::ostream &os, const set_t &array) {
 // В NPC методы типа is_dragon - станут не нужны
 
 set_t fight(const set_t &array, size_t distance) {
+
     set_t dead_list;
 
     for (const auto &attacker : array)
@@ -144,6 +122,14 @@ set_t fight(const set_t &array, size_t distance) {
 
 auto main() -> int {
 
+    int seed;
+    std::cout << "Enter seed(int) for random generate: ";
+    if(!(std::cin >> seed)) {
+        std::cout << "Wrong seed format!" << std::endl;
+        return 1;
+    }
+    std::srand(seed);
+
     set_t array; // npc
 
     // Гененрируем начальное распределение монстров
@@ -161,11 +147,9 @@ auto main() -> int {
     std::cout << "Loading ..." << std::endl;
     array = load("npc.txt");
 
-    std::cout << "Fighting ..." << std::endl
-              << array;
+    std::cout << "Fighting ..." << std::endl << array;
 
-    for (size_t distance = 20; (distance <= 100) && !array.empty(); distance += 10)
-    {
+    for (size_t distance = 20; (distance <= 100) && !array.empty(); distance += 10) {
         auto dead_list = fight(array, distance);
         for (auto &d : dead_list)
             array.erase(d);
@@ -173,10 +157,9 @@ auto main() -> int {
                   << "distance: " << distance << std::endl
                   << "killed: " << dead_list.size() << std::endl
                   << std::endl << std::endl;
-
     }
 
-    std::cout << "Survivors:" << array;
+    std::cout << "Survivors:"  << std::endl << array;
 
     return 0;
 }
