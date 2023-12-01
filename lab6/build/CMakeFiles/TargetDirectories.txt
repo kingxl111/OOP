@@ -1,6 +1,0 @@
-/home/vadim/Рабочий стол/OOP subj/OOP/lab6/build/CMakeFiles/lab6_lib.dir
-/home/vadim/Рабочий стол/OOP subj/OOP/lab6/build/CMakeFiles/lab6_exe.dir
-/home/vadim/Рабочий стол/OOP subj/OOP/lab6/build/CMakeFiles/tests_exe.dir
-/home/vadim/Рабочий стол/OOP subj/OOP/lab6/build/CMakeFiles/test.dir
-/home/vadim/Рабочий стол/OOP subj/OOP/lab6/build/CMakeFiles/edit_cache.dir
-/home/vadim/Рабочий стол/OOP subj/OOP/lab6/build/CMakeFiles/rebuild_cache.dir

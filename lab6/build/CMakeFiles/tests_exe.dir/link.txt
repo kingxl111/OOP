@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/tests_exe.dir/tests/tests.cpp.o -o tests_exe  liblab6_lib.a /usr/local/lib/libgtest.a 
