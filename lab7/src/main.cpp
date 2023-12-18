@@ -11,11 +11,10 @@
 #include <optional>
 #include <array>
 
+#define CONST_TIME 30
+
 using namespace std::chrono_literals;
 std::mutex print_mutex;
-
-std::atomic<bool> stop_move_thread(false);
-std::atomic<bool> stop_fight_thread(false);
 
 // Text Observer
 class TextObserver : public IFightObserver {
@@ -146,6 +145,9 @@ struct FightEvent {
     std::shared_ptr<NPC> defender;
 };
 
+std::atomic<bool> move_thread_exit(false);
+std::atomic<bool> fight_thread_exit(false);
+
 class FightManager {
 private:
     std::queue<FightEvent> events;
@@ -154,20 +156,18 @@ private:
     FightManager() {}
 
 public:
-    static FightManager &get()
-    {
+    static FightManager &get() {
         static FightManager instance;
         return instance;
     }
 
-    void add_event(FightEvent &&event)
-    {
+    void add_event(FightEvent &&event) {
         std::lock_guard<std::shared_mutex> lock(mtx);
         events.push(event);
     }
 
     void operator()() {
-        while (!stop_fight_thread) {
+        while (!fight_thread_exit) { 
             {
                 std::optional<FightEvent> event;
 
@@ -206,7 +206,7 @@ int main() {
     const int DISTANCE{10};
     
     std::time_t start_time = std::time(nullptr);
-    std::time_t finish_time = start_time + 30;
+    std::time_t finish_time = start_time + CONST_TIME;
 
     // Гененрируем начальное распределение монстров
     std::cout << "Generating ..." << std::endl;
@@ -222,7 +222,7 @@ int main() {
 
     int second_counter = 0;
     std::thread move_thread([&array, MAX_X, MAX_Y, DISTANCE, &second_counter]() {
-            while (!stop_move_thread) {
+            while (!move_thread_exit) {
                 // move phase
                 for (std::shared_ptr<NPC> npc : array) {
                     if(npc->is_alive()){
@@ -293,8 +293,8 @@ int main() {
         start_time = std::time(nullptr);
     }
 
-    stop_fight_thread = true;
-    stop_move_thread = true;
+    fight_thread_exit = true;
+    move_thread_exit = true;
 
     move_thread.join();
     fight_thread.join();
